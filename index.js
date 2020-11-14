@@ -12,7 +12,7 @@ function setDate() {
     const minsDeg = mins * 6 + 90
     minHand.style.transform = `rotate(${minsDeg}deg) scale(0.9, 1)`;
     const hrs = now.getHours()
-    const hrsDeg = hrs * 360 / 24 - 90
+    const hrsDeg = hrs * 360 / 12 + 90
     hourHand.style.transform = `rotate(${hrsDeg}deg) scale(0.6, 1.1)`;
     if (secondsDeg === 90) { hand.forEach((val) => { val.classList.remove('transition') }); }
     else if (secondsDeg === 96) { hand.forEach((val) => { val.classList.add('transition') }); }
