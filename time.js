@@ -21,12 +21,14 @@ class Time {
         const minutes = now.getMinutes()
         const minsDeg = minutes * 6 + 90
         minHand.style.transform = `rotate(${minsDeg}deg) scale(0.9, 1)`;
-        const hrs = now.getHours()
-        const hrsDeg = hrs * 360 / 24 + 90
+        const hrs24 = now.getHours()
+        const hrs12 = Number(now.toLocaleString('pl-PL', { hour: 'numeric', hour12: 'true' }).slice(0, 2))
+        const hrsDeg = hrs12 / 12 * 360 + 90
+
         hourHand.style.transform = `rotate(${hrsDeg}deg) scale(0.6, 1.1)`;
         if (secondsDeg === 90) hands.forEach((val) => val.classList.remove('transition'));
         else if (secondsDeg === 96) hands.forEach((val) => val.classList.add('transition'));
-        hrsMins.innerText = `${('0' + hrs).slice(-2)}:${('0' + minutes).slice(-2)}`
+        hrsMins.innerText = `${('0' + hrs24).slice(-2)}:${('0' + minutes).slice(-2)}`
 
         //DATE
         dayNum.innerText = now.getDate();
@@ -36,7 +38,7 @@ class Time {
 
         this.seconds = seconds;
         this.minutes = minutes;
-        this.hours = hrs;
+        this.hours = hrs12;
     }
     start = () => {
         this.setDate()
@@ -127,8 +129,8 @@ class Countdown extends Time {
         }
         else if (this.isCountHours) {
             const countHours = Math.floor(this.counter / 60)
-            this.degree = (this.hours / 24 * 360) + (countHours / 24 * 360)
-            circle.setAttribute('stroke-dashoffset', (countHours / 24 * perimeter) + perimeter)
+            this.degree = (this.hours / 12 * 360) + (countHours / 12 * 360)
+            circle.setAttribute('stroke-dashoffset', (countHours / 12 * perimeter) + perimeter)
         }
         if (this.isCountMinutes || this.isCountHours) {
             circle.style.transform = `rotate(${-90 + this.degree}deg) scale(0.82) translate(50%)`
@@ -155,9 +157,9 @@ class Countdown extends Time {
 
         const inputValue = Number(this.input.value)
 
-        // Maximum number of minutes is set for 1440 (24 hours)
-        if (inputValue > 1440) {
-            this.counter = 1440
+        // Maximum number of minutes is set for 720 (12 hours)
+        if (inputValue > 720) {
+            this.counter = 720
             this.inputIsValid = true;
         }
         else if (inputValue) {
