@@ -1,1 +1,1 @@
-Images from https://unsplash.com/
+Background image from https://unsplash.com/
